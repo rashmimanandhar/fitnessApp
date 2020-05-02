@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {View} from 'react-native';
 import {createStore} from "redux";
 import {Provider} from "react-redux";
-import reducer from "./reducers";
+// @ts-ignore
+import reducer from './reducers';
 
 // @ts-ignore
 import AddEntry from './components/AddEntry';
@@ -16,7 +17,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
-      <View>
+      <View style={{flex: 1}}>
         <AddEntry/>
       </View>
       </Provider>
