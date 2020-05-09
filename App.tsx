@@ -1,40 +1,55 @@
 import React from 'react'
-import { View, Platform } from 'react-native'
+import {Platform, StatusBar, View} from 'react-native'
 import AddEntry from './components/AddEntry'
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
+import {createStore} from 'redux'
+import {Provider} from 'react-redux'
 import reducer from './reducers'
 import History from './components/History'
 import {FontAwesome, Ionicons} from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import Constants from "expo-constants";
+
+
 
 import {purple, white} from "./utils/colors";
+
+function UdaciStatusBar({backgroundColor, ...props}) {
+  return (
+    <View style={{backgroundColor, height: Constants.StatusBarHeight}}>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props}/>
+    </View>
+  )
+}
 
 const Tabs =
   Platform.OS === "ios"
     ? createBottomTabNavigator()
     : createMaterialTopTabNavigator();
 
-export default class App extends React.Component{
-  render(){
+export default class App extends React.Component {
+  render() {
     const store = createStore(reducer)
-    return(
+    return (
       <Provider store={store}>
+        <UdaciStatusBar
+        backgroundColor={purple}
+        barStyle="light-content"
+        />
         <NavigationContainer>
           <Tabs.Navigator
             initialRouteName="AddEntry"
-            screenOptions={({ route }) => ({
-              tabBarIcon: ({ color, size }) => {
+            screenOptions={({route}) => ({
+              tabBarIcon: ({color, size}) => {
                 let icon;
                 if (route.name === "Add Entry") {
                   icon = (
-                    <FontAwesome name="plus-square" size={size} color={color} />
+                    <FontAwesome name="plus-square" size={size} color={color}/>
                   );
                 } else if (route.name === "History") {
                   icon = (
-                    <Ionicons name="ios-bookmarks" size={size} color={color} />
+                    <Ionicons name="ios-bookmarks" size={size} color={color}/>
                   );
                 }
                 return icon;
@@ -55,8 +70,8 @@ export default class App extends React.Component{
               }
             }}
           >
-            <Tabs.Screen name="Add Entry" component={AddEntry} />
-            <Tabs.Screen name="History" component={History} />
+            <Tabs.Screen name="Add Entry" component={AddEntry}/>
+            <Tabs.Screen name="History" component={History}/>
           </Tabs.Navigator>
         </NavigationContainer>
       </Provider>
